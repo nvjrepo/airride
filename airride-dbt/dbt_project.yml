@@ -1,0 +1,43 @@
+name: 'airride_dbt'
+version: '1.0.0'
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'airride_dbt'
+
+# Optionally specify a custom list of directories for objects in DBT projects
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+models:
+  airride_dbt:
+    +persist_docs:
+      relation: true
+      columns: true
+    staging:
+      +materialized: view
+      +schema: warehouse
+    intermediate:
+      +materialized: ephemeral 
+      +schema: warehouse
+    marts:
+      +materialized: table
+      +schema: marts
+
+tests:
+  +store_failures: true
+
+seeds:
+  airride_dbt:
+    utils:
+      +schema: seeds

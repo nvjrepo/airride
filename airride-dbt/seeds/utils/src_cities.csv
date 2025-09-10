@@ -1,0 +1,30 @@
+city_id,city_name,country,latitude,longitude
+1,New York,USA,40.7128,-74.0060
+2,Tokyo,Japan,35.6895,139.6917
+3,Sydney,Australia,-33.8688,151.2093
+4,Dubai,UAE,25.276987,55.296249
+5,Berlin,Germany,52.52,13.405
+6,Moscow,Russia,55.7558,37.6173
+7,Sao Paulo,Brazil,-23.5505,-46.6333
+8,Toronto,Canada,43.65107,-79.347015
+9,Beijing,China,39.9042,116.4074
+10,Mumbai,India,19.076,72.8777
+11,Frankfurt,Germany,50.1109,8.6821
+12,Los Angeles,USA,34.0522,-118.2437
+13,Paris,France,48.8566,2.3522
+14,Hong Kong,China,22.3193,114.1694
+15,Amsterdam,Netherlands,52.3676,4.9041
+16,Rio de Janeiro,Brazil,-22.9068,-43.1729
+17,Bangkok,Thailand,13.7563,100.5018
+18,Melbourne,Australia,-37.8136,144.9631
+19,Cape Town,South Africa,-33.9249,18.4241
+20,Vancouver,Canada,49.2827,-123.1207
+21,London,UK,51.5074,-0.1278
+22,Singapore,Singapore,1.3521,103.8198
+23,Madrid,Spain,40.4168,-3.7038
+24,Miami,USA,25.7617,-80.1918
+25,Chicago,USA,41.8781,-87.6298
+26,San Francisco,USA,37.7749,-122.4194
+27,Johannesburg,South Africa,-26.2041,28.0473
+28,Auckland,New Zealand,-36.8485,174.7633
+29,Mexico City,Mexico,19.4326,-99.1332

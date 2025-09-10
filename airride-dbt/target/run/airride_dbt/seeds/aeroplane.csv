@@ -1,0 +1,21 @@
+
+    
+    
+    
+    create or replace table `prod`.`raw`.`aeroplane` (`airplane_id` bigint ,`airplane_model` string ,`manufacturer` string )
+    
+  using delta
+    
+    
+    
+    
+    
+  ;
+    -- dbt seed --
+    
+          insert overwrite `prod`.`raw`.`aeroplane` values
+          (%s,%s,%s),(%s,%s,%s),(%s,%s,%s),(%s,%s,%s),(%s,%s,%s),(%s,%s,%s),(%s,%s,%s),(%s,%s,%s),(%s,%s,%s),(%s,%s,%s)
+      
+
+;
+  

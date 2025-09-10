@@ -1,0 +1,21 @@
+
+    
+    
+    
+    create or replace table `prod`.`raw`.`customer_group` (`id` bigint ,`type` string ,`name` string ,`registry_number` string )
+    
+  using delta
+    
+    
+    
+    
+    
+  ;
+    -- dbt seed --
+    
+          insert overwrite `prod`.`raw`.`customer_group` values
+          (%s,%s,%s,%s),(%s,%s,%s,%s),(%s,%s,%s,%s),(%s,%s,%s,%s),(%s,%s,%s,%s)
+      
+
+;
+  

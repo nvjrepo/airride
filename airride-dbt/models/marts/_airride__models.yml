@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: dim_aeroplanes
+    description: descriptive attributes for aeroplanes   
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('stg_airride__aeroplanes')                 
+    columns:
+      - name: aeroplane_id
+        description: '{{ doc("aeroplane_id") }}'
+        tests: &common_tests
+          - unique
+          - not_null
+          - dbt_utils.at_least_one
+      - name: aeroplane_size
+        description: > 
+          condition to determine size of aaeroplanes, from max_seats
+      - name: max_seats
+        description: '{{ doc("max_seats") }}'   
+  - name: dim_customers
+    description: descriptive attributes for customers  
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('stg_airride__customers')                 
+    columns:
+      - name: customer_id
+        description: '{{ doc("customer_id") }}'
+        tests: *common_tests
+      - name: booking_country
+        description: > 
+          Countries where the trips is booked, from customer phone number  
+  - name: fct_daily_customers
+    description: events table for monitoring daily customer activities                
+    columns:
+      - name: unique_id
+        description: 'hashed combination of date_day and customer_id'
+        tests: *common_tests
+      - name: trip_distance_in_km
+        description: '{{ doc("is_successful_order") }}'
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id
+      - name: order_id
+        tests:
+          - relationships:
+              to: ref('fct_orders')
+              field: customer_id
+      - name: trip_id
+        tests:
+          - relationships:
+              to: ref('fct_trips')
+              field: customer_id      
+      - name: first_orderred_at
+        description: timestamp when customers book the first ride
+      - name: is_active
+        description: whether the customer active in the date                                        
+  - name: fct_orders
+    description: events table for order booking and processing 
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('stg_airride__orders')                 
+    columns:
+      - name: order_id
+        description: '{{ doc("order_id") }}'
+        tests: *common_tests
+      - name: is_successful_order
+        description: '{{ doc("is_successful_order") }}'
+  - name: fct_trips
+    description: events table for monitoring trips information
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('stg_airride__trips')                 
+    columns:
+      - name: trip_id
+        description: '{{ doc("trip_id") }}'
+        tests: *common_tests
+      - name: trip_distance_in_km
+        description: '{{ doc("is_successful_order") }}'

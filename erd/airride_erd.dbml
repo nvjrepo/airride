@@ -1,0 +1,56 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table fct_orders {
+  order_id int
+  trip_id int
+  customer_id int
+  seat_number string
+  status string
+  revenue float
+}
+
+Table fct_trips {
+  trip_id int
+  aeroplane_id int
+  started_at timestamp
+  ended_at timestamp
+  origin_city string
+  destination_city string
+  start_end_difference int
+  trip_distance_in_km float
+
+}
+
+Table fct_daily_customers {
+  date_day date
+  customer_id int
+  is_active boolean
+  revenue loat
+  number_of_orders int
+}
+
+Table dim_customers {
+  customer_id int
+  name string
+  group_name string
+  group_type string
+  booking_country string
+}
+
+Table dim_aeroplanes {
+  aeroplane_id int
+  hashed_aeroplane_id string
+  model string
+  manufacturer string
+  size string
+}
+
+
+Ref: fct_orders.customer_id > dim_customers.customer_id // many-to-one
+
+Ref: fct_trips.aeroplane_id > dim_aeroplanes.aeroplane_id
+
+Ref: fct_trips.trip_id < fct_orders.trip_id
+
+Ref: fct_daily_customers.customer_id > dim_customers.customer_id // many-to-one

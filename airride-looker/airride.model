@@ -1,0 +1,75 @@
+# Define the database connection to be used for this model.
+connection: "airride"
+
+# include all the views
+include: "/views/*.view.lkml"
+
+explore: fct_trips {
+  label: "Airride Orders, Trips & Attributes"
+  view_label: "Trips"
+  
+  # allow fanout since some trips have 0 orders
+  join: fct_orders {
+    view_label: "Orders"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${fct_trips.trip_id} = ${fct_orders.trip_id} ;;
+  }
+
+  join: dim_customers {
+    view_label: "Customers"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${fct_orders.customer_id} = ${dim_customers.customer_id} ;;
+  }
+
+  join: dim_aeroplanes {
+    view_label: "Aeroplanes"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${fct_trips.aeroplane_id} = ${dim_aeroplanes.aeroplane_id} ;;
+  }
+
+}
+
+
+explore: fct_daily_customers {
+  label: "Daily Customers"
+  view_label: "Daily"
+  
+  join: fct_orders {
+    view_label: "Orders"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${fct_daily_customers.order_id} = ${fct_orders.order_id} ;;
+  }
+
+  join: dim_customers {
+    view_label: "Customers"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${fct_orders.customer_id} = ${dim_customers.customer_id} ;;
+  }
+
+  join: fct_orders {
+    view_label: "Orders"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${fct_daily_customers.order_id} = ${fct_orders.order_id} ;;
+  }
+
+  join: fct_trips {
+    view_label: "Trips"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${fct_daily_customers.trip_id} = ${fct_trips.trip_id} ;;
+  }
+
+  join: dim_aeroplanes {
+    view_label: "Aeroplanes"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${fct_trips.aeroplane_id} = ${dim_aeroplanes.aeroplane_id} ;;
+  }
+
+}

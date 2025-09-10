@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: stg_airride__aeroplane_models
+    description: staging layer for   
+    columns:
+      - name: aeroplane_model_id
+        description: '{{ doc("aeroplane_model_id") }}'
+        tests: &common_tests
+          - unique
+          - not_null
+          - dbt_utils.at_least_one
+  - name: stg_airride__aeroplanes
+    description: staging layer for aeroplane   
+    columns:
+      - name: aeroplane_id
+        description: '{{ doc("aeroplane_id") }}'
+        tests: *common_tests
+      - name: hashed_aeroplane_id
+        tests:
+          - relationships:
+              name: relationship_hashed_aeroplane_id__aeroplanes_aeroplane_models
+              to: ref('stg_airride__aeroplane_models')
+              field: hashed_aeroplane_id
+  - name: stg_airride__customer_groups
+    description: staging layer for customer group   
+    columns:
+      - name: customer_group_id
+        description: '{{ doc("customer_group_id") }}'
+        tests: *common_tests
+      - name: customer_group_id
+        tests:
+          - relationships:
+              name: relationship_aeroplane_id__customer_groups_customers
+              to: ref('stg_airride__customers')
+              field: customer_group_id
+  - name: stg_airride__customers
+    description: staging layer for customer   
+    columns:
+      - name: customer_id
+        description: '{{ doc("customer_id") }}'
+        tests: *common_tests
+  - name: stg_airride__orders
+    description: staging layer for order   
+    columns:
+      - name: order_id
+        description: '{{ doc("order_id") }}'
+        tests: *common_tests
+      - name: trip_id
+        description: '{{ doc("trip_id") }}'
+        tests:
+          - relationships:
+              name: relationship_aeroplane_id__orders_trips
+              to: ref('stg_airride__trips')
+              field: trip_id
+      - name: customer_id
+        description: '{{ doc("customer_id") }}'
+        tests:
+          - relationships:
+              name: relationship_aeroplane_id__orders_customers
+              to: ref('stg_airride__customers')
+              field: customer_id
+  - name: stg_airride__trips
+    description: staging layer for trip  
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "started_at < ended_at"  
+    columns:
+      - name: trip_id
+        description: '{{ doc("trip_id") }}'
+        tests: *common_tests
+      - name: aeroplane_id
+        description: '{{ doc("aeroplane_id") }}'
+        tests:
+          - relationships:
+              name: relationship_aeroplane_id__trips_aeroplanes
+              to: ref('stg_airride__aeroplanes')
+              field: aeroplane_id
+      - name: started_at
+        description: '{{ doc("started_at") }}'      
+      - name: ended_at
+        description: '{{ doc("ended_at") }}'

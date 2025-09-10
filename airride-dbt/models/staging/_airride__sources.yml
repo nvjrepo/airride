@@ -1,0 +1,48 @@
+version: 2
+
+sources:
+
+- name: airride
+  description: sample data for Air Boltic service
+  schema: raw
+  database: prod
+  tables:                
+    - name: aeroplane
+      description: Information of aeroplane
+      columns:
+        - name: airplane_id
+          description: '{{ doc("aeroplane_id") }}'        
+          tests: &common_tests
+            - unique
+            - not_null
+            - dbt_utils.at_least_one          
+    - name: aeroplane_model 
+      description: Information of aeroplane model
+      columns: 
+        - name: id
+          description: '{{ doc("aeroplane_model_id") }}'   
+          tests: *common_tests                 
+    - name: customer
+      description: Information of customer
+      columns:
+        - name: customer_id
+          description: '{{ doc("customer_id") }}'
+          tests: *common_tests  
+    - name: customer_group
+      description: Information of customer group
+      columns:
+        - name: id
+          description: '{{ doc("customer_group_id") }}'
+          tests: *common_tests  
+    - name: order 
+      description: Information of order
+      columns: 
+        - name: order_id
+          description: '{{ doc("order_id") }}'   
+          tests: *common_tests  
+    - name: trip 
+      description: Information of trip
+      columns: 
+        - name: trip_id
+          description: '{{ doc("trip_id") }}'   
+          tests: *common_tests

@@ -1,0 +1,20 @@
+airride_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: databricks
+      catalog: prod
+      schema: default
+      host: '{{ env_var("DBT_HOST") }}'
+      http_path: '{{ env_var("DBT_HTTP_PATH") }}'
+      token: '{{ env_var("DBT_TOKEN") }}'
+      threads: 8
+
+    raw:
+      type: databricks
+      catalog: prod
+      schema: raw
+      host: '{{ env_var("DBT_HOST") }}'
+      http_path: '{{ env_var("DBT_HTTP_PATH") }}'
+      token: '{{ env_var("DBT_TOKEN") }}'
+      threads: 8
